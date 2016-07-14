@@ -11,7 +11,7 @@
       "http_directory": "kickstart",
       "ssh_wait_timeout": "3000s",
       "boot_wait": "10s",
-      "boot_command": [ "<tab>", " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/master4-ks.cfg <enter>"	  ],
+      "boot_command": [ "<tab>", " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/openldap_server-ks.cfg <enter>"	  ],
       "guest_additions_mode": "upload",
       "shutdown_command": "shutdown now"
     }
@@ -20,26 +20,17 @@
   "provisioners": [
 	{
       "type": "shell",
-      "scripts": [ 
-        "scripts/set-private-keys.sh",	  
-        "scripts/install-gems.sh"
+      "scripts": [
+        "scripts/set-private-keys.sh"
       ],
       "start_retry_timeout": "5m",
-	  "pause_before": "120s"	
-	},
-	{
-      "type": "shell",
-      "scripts": [ 
-        "scripts/update-git.sh"
-      ],
-      "start_retry_timeout": "5m",
-	  "pause_before": "120s"	
+	  "pause_before": "120s"
 	}
 
   ],
 
   "post-processors": [{
     "type": "vagrant",
-    "output": "master4.box"
+    "output": "openldap_server.box"
   }]
 }
