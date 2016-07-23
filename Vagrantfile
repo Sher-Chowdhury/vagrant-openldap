@@ -79,24 +79,25 @@ Vagrant.configure(2) do |config|
   end
 
   ##
-  ## openldap_client - linux 7 boxes
+  ## openldap-client - linux 7 boxes
   ##
-  (1..2).each do |i|
-    config.vm.define "openldap_client0#{i}" do |openldap_client|
+##  (1..2).each do |i|
+  (1..1).each do |i|
+    config.vm.define "openldap-client0#{i}" do |openldap_client|
       openldap_client.vm.box = "centos7.box"
-      openldap_client.vm.hostname = "openldap_client0#{i}.local"
+      openldap_client.vm.hostname = "openldap-client0#{i}.local"
       openldap_client.vm.network "private_network", ip: "192.168.52.10#{i}"
       openldap_client.vm.provider "virtualbox" do |vb|
         vb.gui = false
         vb.memory = "1024"
         vb.cpus = 1
         vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-        vb.name = "openldap_client0#{i}"
+        vb.name = "openldap-client0#{i}"
       end
 
       # this takes a vm snapshot (which we have called "basline") as the last step of "vagrant up".
       openldap_client.vm.provision :host_shell do |host_shell|
-        host_shell.inline = "vagrant snapshot take openldap_client0#{i} baseline"
+        host_shell.inline = "vagrant snapshot take openldap-client0#{i} baseline"
       end
 
     end
@@ -116,10 +117,10 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision :host_shell do |host_shell|
-    host_shell.inline = 'hostfile=/c/Windows/System32/drivers/etc/hosts && grep -q 192.168.52.101 $hostfile || echo "192.168.50.101   openldap_client01 openldap_client01.local" >> $hostfile'
+    host_shell.inline = 'hostfile=/c/Windows/System32/drivers/etc/hosts && grep -q 192.168.52.101 $hostfile || echo "192.168.50.101   openldap-client01 openldap-client01.local" >> $hostfile'
   end
 
   config.vm.provision :host_shell do |host_shell|
-    host_shell.inline = 'hostfile=/c/Windows/System32/drivers/etc/hosts && grep -q 192.168.52.102 $hostfile || echo "192.168.50.102   openldap_client02 openldap_client02.local" >> $hostfile'
+    host_shell.inline = 'hostfile=/c/Windows/System32/drivers/etc/hosts && grep -q 192.168.52.102 $hostfile || echo "192.168.50.102   openldap-client02 openldap-client02.local" >> $hostfile'
   end
 end
