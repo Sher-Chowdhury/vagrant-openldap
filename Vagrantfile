@@ -22,10 +22,10 @@ Vagrant.configure(2) do |config|
   ##
   # The "openldap_server" string is the name of the box.
   config.vm.define "openldap_server" do |openldap_server_config|
-    openldap_server_config.vm.box = "openldap_server.box"
+    openldap_server_config.vm.box = "centos7.box"
 
     # this set's the machine's hostname.
-    openldap_server_config.vm.hostname = "openldap_server.local"
+    openldap_server_config.vm.hostname = "openldap-server.local"          # underscore isnt allowed in vagrant.
 
 
     # This will appear when you do "ip addr show". You can then access your guest machine's website using "http://192.168.50.4"
@@ -59,6 +59,16 @@ Vagrant.configure(2) do |config|
     end
     openldap_server_config.vm.provision "shell", path: "scripts/import-ssh-keys.sh"
 
+    openldap_server_config.vm.provision "file", source: "files/config.ldif", destination: "/root/config.ldif"
+
+    openldap_server_config.vm.provision "file", source: "files/structure.ldif", destination: "/root/structure.ldif"
+
+    openldap_server_config.vm.provision "file", source: "files/group.ldif", destination: "/root/group.ldif"
+
+    openldap_server_config.vm.provision "file", source: "files/user-tom.ldif", destination: "/root/user-tom.ldif"
+
+    openldap_server_config.vm.provision "file", source: "files/user-jerry.ldif", destination: "/root/user-jerry.ldif"
+
     openldap_server_config.vm.provision "shell", path: "scripts/install-openldap_server.sh"
 
     # this takes a vm snapshot (which we have called "basline") as the last step of "vagrant up".
@@ -73,7 +83,7 @@ Vagrant.configure(2) do |config|
   ##
   (1..2).each do |i|
     config.vm.define "openldap_client0#{i}" do |openldap_client|
-      openldap_client.vm.box = "client.box"
+      openldap_client.vm.box = "centos7.box"
       openldap_client.vm.hostname = "openldap_client0#{i}.local"
       openldap_client.vm.network "private_network", ip: "192.168.52.10#{i}"
       openldap_client.vm.provider "virtualbox" do |vb|
@@ -96,9 +106,9 @@ Vagrant.configure(2) do |config|
   # it adds entry to the /etc/hosts file.
   # this block is placed outside the define blocks so that it gts applied to all VMs that are defined in this vagrantfile.
   config.vm.provision :hosts do |provisioner|
-    provisioner.add_host '192.168.52.100', ['openldap_server', 'openldap_server.local']
-    provisioner.add_host '192.168.52.101', ['openldap_client01', 'openldap_client01.local']
-    provisioner.add_host '192.168.52.102', ['openldap_client02', 'openldap_client02.local']
+    provisioner.add_host '192.168.52.100', ['openldap-server', 'openldap-server.local']
+    provisioner.add_host '192.168.52.101', ['openldap-client01', 'openldap-client01.local']
+    provisioner.add_host '192.168.52.102', ['openldap-client02', 'openldap-client02.local']
   end
 
   config.vm.provision :host_shell do |host_shell|

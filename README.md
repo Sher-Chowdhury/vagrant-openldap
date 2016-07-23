@@ -100,15 +100,6 @@ $ vagrant up openldap_client02
 
 
 
-### Set up local rerouting if you are running vagrant on windows machine
-
-Enter this in the windows hosts file (C:\Windows\System32\drivers\etc\hosts):
-
-```
-192.168.50.100   puppetmaster puppetmaster.local
-192.168.50.101   puppetagent01 puppetagent01.local
-192.168.50.102   puppetagent02 puppetagent02.local
-```
 
 ### Login credentials
 you can ssh into all your machines using:

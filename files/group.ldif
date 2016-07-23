@@ -1,0 +1,4 @@
+dn: cn=ldapusers,ou=group,dc=openldap-server,dc=local
+objectClass: posixGroup
+cn: ldapusers
+gidNumber: 4000

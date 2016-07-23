@@ -1,0 +1,14 @@
+dn: dc=openldap-server,dc=local
+dc: openldap-server
+objectClass: top
+objectClass: domain
+
+dn: ou=people,dc=openldap-server,dc=local
+ou: people
+objectClass: top
+objectClass: organizationalUnit
+
+dn: ou=group,dc=openldap-server,dc=local
+ou: group
+objectClass: top
+objectClass: organizationalUnit
