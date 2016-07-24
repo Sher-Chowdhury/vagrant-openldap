@@ -1,6 +1,6 @@
-dn: uid=jerry,ou=People,dc=openldap-server,dc=local
-uid: jerry
-cn: jerry
+dn: uid=tom,ou=People,dc=openldap-server,dc=local
+uid: tom
+cn: tom
 objectClass: account
 objectClass: posixAccount
 objectClass: top
@@ -11,7 +11,7 @@ shadowMin: 0
 shadowMax: 0
 shadowWarning: 0
 loginShell: /bin/bash
-uidNumber: 4000
-gidNumber: 4000
-homeDirectory: /home/jerry
-gecos: jerry the mouse
+uidNumber: 4002
+gidNumber: 4002
+homeDirectory: /home/tom
+gecos: tom the cat

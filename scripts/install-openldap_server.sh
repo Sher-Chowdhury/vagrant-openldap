@@ -16,7 +16,7 @@ yum install -y migrationtools
 cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 
 ## The following command:
-slaptest
+slaptest  2>/dev/null
 ## will output something like this:
 # 5793304d hdb_db_open: database "dc=my-domain,dc=com": db_open(/var/lib/ldap/id2entry.bdb) failed: No such file or directory (2).
 # 5793304d backend_startup_one (type=hdb, suffix="dc=my-domain,dc=com"): bi_db_open failed! (2)
@@ -71,7 +71,7 @@ ldapadd -Y EXTERNAL -H ldapi:/// -D "cn=config" -f cosine.ldif
 ldapadd -Y EXTERNAL -H ldapi:/// -D "cn=config" -f nis.ldif
 
 
-cd ~
+cd /tmp/openldap
 
 # Now let's create an ldap root password:
 
@@ -80,7 +80,7 @@ slappasswd -s password123 -n > rootpwd    # the -n option trims out the trailing
 cat rootpwd
 
 
-sed -i -e "s:xxxxxxxxxx:`cat ~/rootpwd`:g" config.ldif
+sed -i -e "s:xxxxxxxxxx:`cat /tmp/openldap/rootpwd`:g" config.ldif
 
 ldapmodify -Y EXTERNAL -H ldapi:/// -f config.ldif
 
@@ -100,7 +100,7 @@ ldapmodify -Y EXTERNAL -H ldapi:/// -f config.ldif
 #
 # modifying entry "olcDatabase={1}monitor,cn=config"
 
-cd ~
+cd /tmp/openldap
 ldapadd -x -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -f structure.ldif
 
 ## This should output:
@@ -153,16 +153,18 @@ ldapadd -x -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -f group.l
 # adding new entry "cn=ldapusers,ou=group,dc=openldap-server,dc=local"
 
 
-cd ~
+cd /tmp/openldap
 slappasswd -s passwordTOM -h {crypt} -n > toms-encrypted-password
-sed -i -e "s:xxxxxxxxxx:`cat ~/toms-encrypted-password`:g" user-tom.ldif
+sed -i -e "s:xxxxxxxxxx:`cat /tmp/openldap/toms-encrypted-password`:g" user-tom.ldif
 ldapadd -x -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -f user-tom.ldif
 ## The outputs:
 # adding new entry "uid=tom,ou=People,dc=openldap-server,dc=local"
 
 slappasswd -s passwordJERRY -h {crypt} -n > jerrys-encrypted-password
-sed -i -e "s:xxxxxxxxxx:`cat ~/jerrys-encrypted-password`:g" user-jerry.ldif
+sed -i -e "s:xxxxxxxxxx:`cat /tmp/openldap/jerrys-encrypted-password`:g" user-jerry.ldif
 ldapadd -x -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -f user-jerry.ldif
+
+
 
 ## This outputs:
 
