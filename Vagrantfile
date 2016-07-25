@@ -106,15 +106,4 @@ Vagrant.configure(2) do |config|
     provisioner.add_host '192.168.52.102', ['openldap-client02', 'openldap-client02.local']
   end
 
-  config.vm.provision :host_shell do |host_shell|
-    host_shell.inline = 'hostfile=/c/Windows/System32/drivers/etc/hosts && grep -q 192.168.52.100 $hostfile || echo "192.168.50.100   openldap_server openldap_server.local" >> $hostfile'
-  end
-
-  config.vm.provision :host_shell do |host_shell|
-    host_shell.inline = 'hostfile=/c/Windows/System32/drivers/etc/hosts && grep -q 192.168.52.101 $hostfile || echo "192.168.50.101   openldap-client01 openldap-client01.local" >> $hostfile'
-  end
-
-  config.vm.provision :host_shell do |host_shell|
-    host_shell.inline = 'hostfile=/c/Windows/System32/drivers/etc/hosts && grep -q 192.168.52.102 $hostfile || echo "192.168.50.102   openldap-client02 openldap-client02.local" >> $hostfile'
-  end
 end

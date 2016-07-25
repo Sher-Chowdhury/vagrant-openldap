@@ -21,7 +21,8 @@ yum install -y openldap-clients nss-pam-ldapd
 authconfig --enableldap --enableldapauth --ldapserver=openldapmaster.openldap-server.local --ldapbasedn="dc=openldap-server,dc=local" --update
 
 sed -i -e 's/^passwd.*sss$/passwd:     files sss ldap/g' /etc/nsswitch.conf
-
+sed -i -e 's/^shadow.*sss$/shadow:     files sss ldap/g' /etc/nsswitch.conf
+sed -i -e 's/^group.*sss$/group:     files sss ldap/g' /etc/nsswitch.conf
 
 
 systemctl start nslcd

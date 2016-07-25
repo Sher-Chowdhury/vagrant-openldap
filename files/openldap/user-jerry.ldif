@@ -5,13 +5,13 @@ objectClass: account
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: xxxxxxxxxx
+userPassword: {crypt}x
 shadowLastChange: 0
 shadowMin: 0
 shadowMax: 0
 shadowWarning: 0
 loginShell: /bin/bash
 uidNumber: 4001
-gidNumber: 4001
+gidNumber: 4000
 homeDirectory: /home/jerry
 gecos: jerry the mouse
