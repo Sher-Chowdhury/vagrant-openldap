@@ -1,4 +1,4 @@
-dn: uid=tom,ou=People,dc=openldap-server,dc=local
+dn: uid=tom,ou=people,dc=openldap-server,dc=local
 uid: tom
 cn: tom
 objectClass: account
@@ -6,10 +6,11 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}x
-shadowLastChange: 0
-shadowMin: 0
-shadowMax: 0
-shadowWarning: 0
+shadowLastChange: -1
+shadowMin: -1
+shadowMax: -1
+shadowWarning: -1
+shadowExpire: -1
 loginShell: /bin/bash
 uidNumber: 4002
 gidNumber: 4000

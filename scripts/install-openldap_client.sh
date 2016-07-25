@@ -8,7 +8,7 @@ echo '##########################################################################
 # yum install -y oddjob oddjob-mkhomedir
 
 
-yum install -y openldap-clients nss-pam-ldapd
+yum install -y openldap-clients nss-pam-ldapd nss_ldap
 
 # They're are a few way to configure the client:
 # authconfig-tui command
@@ -18,11 +18,11 @@ yum install -y openldap-clients nss-pam-ldapd
 
 # We are going to do it using the authconfig cli command
 
-authconfig --enableldap --enableldapauth --ldapserver=openldapmaster.openldap-server.local --ldapbasedn="dc=openldap-server,dc=local" --update
+authconfig --enableldap --enableldapauth --ldapserver=openldapmaster.openldap-server.local --ldapbasedn="dc=openldap-server,dc=local" --disablesssdauth --enableforcelegacy --update
 
-sed -i -e 's/^passwd.*sss$/passwd:     files sss ldap/g' /etc/nsswitch.conf
-sed -i -e 's/^shadow.*sss$/shadow:     files sss ldap/g' /etc/nsswitch.conf
-sed -i -e 's/^group.*sss$/group:     files sss ldap/g' /etc/nsswitch.conf
+sed -i -e 's/^passwd.*sss$/passwd:     files ldap/g' /etc/nsswitch.conf
+#sed -i -e 's/^shadow.*sss$/shadow:     files ldap/g' /etc/nsswitch.conf
+sed -i -e 's/^group.*sss$/group:     files ldap/g' /etc/nsswitch.conf
 
 
 systemctl start nslcd

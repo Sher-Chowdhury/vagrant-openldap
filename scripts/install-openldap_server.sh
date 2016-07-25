@@ -167,7 +167,7 @@ ldappasswd -s testtom -w password123 -D "cn=Manager,dc=openldap-server,dc=local"
 #slappasswd -s passwordJERRY -h {crypt} -n > jerrys-encrypted-password
 #sed -i -e "s:xxxxxxxxxx:`cat /tmp/openldap/jerrys-encrypted-password`:g" user-jerry.ldif
 ldapadd -x -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -f user-jerry.ldif
-ldappasswd -s testjerry -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -x "uid=tom,ou=people,dc=openldap-server,dc=local"
+ldappasswd -s testjerry -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -x "uid=jerry,ou=people,dc=openldap-server,dc=local"
 
 ## This outputs:
 
