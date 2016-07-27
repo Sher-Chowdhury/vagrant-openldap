@@ -14,5 +14,5 @@ shadowExpire: -1
 loginShell: /bin/bash
 uidNumber: 4002
 gidNumber: 4000
-homeDirectory: /home/tom
+homeDirectory: /home/ldapusers/tom
 gecos: tom the cat

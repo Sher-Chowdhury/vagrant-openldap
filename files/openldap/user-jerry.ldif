@@ -14,5 +14,5 @@ shadowExpire: -1
 loginShell: /bin/bash
 uidNumber: 4001
 gidNumber: 4000
-homeDirectory: /home/jerry
+homeDirectory: /home/ldapusers/jerry
 gecos: jerry the mouse
