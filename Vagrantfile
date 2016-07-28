@@ -117,6 +117,9 @@ Vagrant.configure(2) do |config|
 
     #nfs_server_config.vm.provision "file", source: "files/nfs", destination: "/tmp"
 
+    # this needs to be done so that home folders have correct user:group permissions
+    nfs_server_config.vm.provision "shell", path: "scripts/install-openldap_client.sh"
+
     nfs_server_config.vm.provision "shell", path: "scripts/setup-nfs_server.sh"
 
     # this takes a vm snapshot (which we have called "basline") as the last step of "vagrant up".
