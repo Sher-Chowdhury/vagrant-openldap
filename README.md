@@ -27,9 +27,9 @@ you need to have the following installed on your host machine:
 * [virtualbox](https://www.virtualbox.org/)  
 * [packer](https://www.packer.io/)
 * [vagrant](https://www.vagrantup.com/)
-* [git-bash](https://msysgit.github.io/)
+* [git-bash](https://msysgit.github.io/) # Note: note required for Apple Mac users. 
 
-Once they are all installed, do the following:
+Once they are all installed, do the following (note, note required for Apple Mac users):
 
 1. right click on the virtualbox icon,
 2. go to properties,
@@ -40,7 +40,7 @@ Once they are all installed, do the following:
 7. Repeat the above steps, but this time for Git bash, You can find this icon under, start -> All programs -> git -> Git Bash
 
 
-Next we need to configure Git bash to make it easier to use:
+Next we need to configure Git bash to make it easier to use (Note, note required for Apple Mac users):
 
 1. Open new git bash tereminal
 2. right click on the header -> defaults -> "Options" tab -> enable check boxes (there's four in total)
@@ -55,54 +55,53 @@ This will allow you to scroll up further and do copy-pasting in/out of the git-b
 
 
 
-
-### Pre-reqs (optional, but recommended)
-
-Open up a git-bash terminal and:
-
-* run the ssh-keygen command on your host machine (if you haven't already done this in past).
-* run the following to enter your credentials (if you haven't already done this in past):
-
-```
-$ git config --global user.name "John Doe"
-$ git config --global user.email johndoe@example.com
-$ git config --global core.autocrlf false
-$ git config --global push.default simple
-```
-
-
-
 ### Set up
 
-Start a git-bash terminal
+Start a git-bash or bash terminal
 
 cd into the project folder and run the following to create the 2 ".box"" files
 
 ```sh
-$ packer build openldap_server.json
-$ packer build client.json                      # to be completed
+$ packer build centos7.json 
 ```
-Each of the above commands will take about 20 minutes to complete, but depends on your machine specs and internet connections.
+This will take about 20 minutes to complete, but depends on your machine specs and internet connections.
 
-The Run the following:
+Then run the following:
 
 ```sh
-$ vagrant up openldap_server
+$ vagrant up
+```
+Monitor output, there will be some texts that are highlighted in red. Review them to ensure that they're not error messages. 
+
+
+Next confirm everything is running:
+
+```
+$ vagrant status
+Current machine states:
+
+openldap_server           running (virtualbox)
+nfs_server                running (virtualbox)
+openldap-client01         running (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`.
+
 ```
 
-There are also 2 openldap CentOS 7 clients that you can start up:
+You can now ssh into each vm like this:
 
-
-```sh
-$ vagrant up openldap_client01
-$ vagrant up openldap_client02
+```
+$ vagrant ssh openldap-client01
 ```
 
+For the RHCSA exam, you only need to know how to setup/configure openldap-client01
 
 
 
 ### Login credentials
-you can ssh into all your machines using:
+You can also ssh into all your machines using:
 
 ```
 username: vagrant
@@ -116,7 +115,6 @@ username: root
 password: vagrant
 ```
 
-If you want to trigger ansible runs, you need to log in as the root user.
 
 
 
@@ -129,15 +127,8 @@ On accasions you'll want to reset your vagrant boxes. This is usually done by do
 For each vm, a virtualbox is taken towards the end of your "vagrant up". This snapshot is called "baseline". If you want to roll back to this snapshot, then you do:
 
 ```
-vagrant snapshot go puppetmaster baseline
+vagrant snapshot go openldap-client01 baseline
 ```
-
-...or for an ansible client, e.g. puppetagent01, you do:
-
-```
-vagrant snapshot go puppetagent01 baseline
-```
-
 
 
 ### Start all over again
@@ -149,4 +140,4 @@ vagrant box list
 vagrant box remove {box name}
 ```
 
-Then delete the 2 .box files, or in fact delete the entire vagrant project then do a git clone again.  
+Then delete any .box files, or in fact delete the entire vagrant project then do a git clone again.  
