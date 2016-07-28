@@ -12,6 +12,6 @@ mkdir /home/ldapusers
 
 mkdir -p /etc/autofs/nfs
 
-echo "*  -fstype=nfs,rw  home-directories.nfs-server.local:/nfs/home-directories/$" > /etc/autofs/nfs/automount-home-directories.conf
+echo "*  -fstype=nfs,rw  home-directories.nfs-server.local:/nfs/home-directories/&" > /etc/autofs/nfs/automount-home-directories.conf
 
 systemctl start autofs
