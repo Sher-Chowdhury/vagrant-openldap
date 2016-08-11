@@ -173,7 +173,17 @@ For the RHCSA exam, you don't need to know how to setup + configure an nfs serve
 
 #### openldap-client01 server
 
-This vm is where you do most (if not all) your practicing for the RHCSA exam. 
+This vm is where you do all of your practicing for the RHCSA exam.
+
+There are 2 ways to build this VM.
+
+1. End-result state - This is the default state that is built when you ran the "vagrant up" command earlier on. In this mode, this vm has openldap and nfs clients already set up and in a working state. This will give you an idea of what to expect when everthing is working.
+2. Vanilla state - In this state, openldap-client01 is just a generic centos7 machine and it's up to you to perform the tasks needed so that it mimicks the End-result state.
+
+
+
+
+
 
 E.g. from your macbook/laptop/desktop, open up a bash (or git-bash) terminal, cd into the directory contains the file "Vagrantfile", then run:
 
