@@ -30,14 +30,19 @@
   ],
 
   "post-processors": [
-    {
-      "type": "atlas",
-      "artifact": "codingbee/centos7",
-      "artifact_type": "vagrant.box",
-      "metadata": {
-        "created_at": "{{timestamp}}",
-        "provider": "virtualbox"
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": false
+      }, 
+      {
+        "type": "atlas",
+        "artifact": "codingbee/centos7",
+        "artifact_type": "vagrant.box",
+        "metadata": {
+          "provider": "virtualbox"
+        }
       }
-    }
+    ]
   ]
 }

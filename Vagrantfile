@@ -22,7 +22,7 @@ Vagrant.configure(2) do |config|
   ##
   # The "openldap_server" string is the name of the box.
   config.vm.define "openldap_server" do |openldap_server_config|
-    openldap_server_config.vm.box = "centos7.box"
+    openldap_server_config.vm.box = "CodingBee/centos7"
 
     # this set's the machine's hostname.
     openldap_server_config.vm.hostname = "openldapmaster.openldap-server.local"          # underscore isnt allowed in vagrant.
@@ -78,7 +78,7 @@ Vagrant.configure(2) do |config|
   ##
   # The "openldap_server" string is the name of the box.
   config.vm.define "nfs_server" do |nfs_server_config|
-    nfs_server_config.vm.box = "centos7.box"
+    nfs_server_config.vm.box = "CodingBee/centos7"
 
     # this set's the machine's hostname.
     nfs_server_config.vm.hostname = "home-directories.nfs-server.local"          # underscore isnt allowed in vagrant.
@@ -140,7 +140,7 @@ Vagrant.configure(2) do |config|
 ##  (1..2).each do |i|
   (1..1).each do |i|
     config.vm.define "openldap-client0#{i}" do |openldap_client|
-      openldap_client.vm.box = "centos7.box"
+      openldap_client.vm.box = "CodingBee/centos7"
       openldap_client.vm.hostname = "openldap-client0#{i}.local"
       openldap_client.vm.network "private_network", ip: "192.168.52.10#{i}"
       openldap_client.vm.provider "virtualbox" do |vb|
