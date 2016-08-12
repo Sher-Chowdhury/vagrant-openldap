@@ -144,7 +144,7 @@ Vagrant.configure(2) do |config|
       openldap_client.vm.hostname = "openldap-client0#{i}.local"
       openldap_client.vm.network "private_network", ip: "192.168.52.10#{i}"
       openldap_client.vm.provider "virtualbox" do |vb|
-        vb.gui = false
+        vb.gui = true
         vb.memory = "1500"
         vb.cpus = 1
         vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]

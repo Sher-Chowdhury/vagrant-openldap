@@ -1,6 +1,6 @@
 # Overview
 
-This is a vagrant project that builds a 3 Centos7 VMs running on Virtualbox:  
+This is a vagrant project that builds 3 Centos7 VMs:  
 
 ```
 $ vagrant status
@@ -25,7 +25,7 @@ openldap-client01         192.168.52.101
 
 ```
 
-Note, you only need to ssh into the openldap-client01 in order to practice for the RHCSA exam. To pracice for the RHCSA exam, you need to ssh into openldap-client01 and then install & configure the openldap client. Once that's done, you should then test if your openldap client is working as expected. We'll explain how to perform these tests later.  
+Note, you only need to ssh into the openldap-client01 in order to practice for the RHCSA exam. To practice for the RHCSA exam, you need to ssh into openldap-client01 and then install & configure the openldap client. Once that's done, you should then test if your openldap client is working as expected. We'll explain how to perform these tests later.  
 
 # Pre-reqs
 
@@ -62,12 +62,15 @@ This will allow you to scroll up further and do copy-pasting in/out of the git-b
 
 # Set up
 
-From your macbook/laptop/desktop, open up a bash (or git-bash) terminal, cd into the directory that contains the file "Vagrantfile", then run:
+From your macbook/laptop/desktop, open up a bash terminal (or git-bash for windows users), cd into the directory that contains the file "Vagrantfile", then run:
 
 ```sh
 $ vagrant up
 ```
-Monitor output, there will be some texts that are highlighted in red. Review them to ensure that they're not error messages.
+
+Note: this command might fail the first time, with only about 15 lines of output. If so then try a couple more times.  
+
+Monitor the output, there will be some texts that are highlighted in red, which is expected. You just need to review them to ensure that they're not error messages.
 
 
 Next confirm everything is running:
@@ -86,7 +89,10 @@ VM, run `vagrant status NAME`.
 
 ```
 
-## Local Account Login credentials
+A gui window should have also opened up for the openldap-client01 only. That's so that you can use the authconfig-gtk tool's gui for configuring the openldap client.  
+
+
+## Accessing your VMs
 You can ssh into all your VMs using:
 
 ```
@@ -171,28 +177,134 @@ The key benefit of having centralised home directories is that which server the 
 For the RHCSA exam, you don't need to know how to setup + configure an nfs server like this. But you do for the RHCE exam.
 
 
-## openldap-client01
+# openldap-client01
 
 This vm is where you do all of your practicing for the RHCSA exam.
 
 There are 2 ways to build this VM.
 
-1. End-result state - This is the default state that is built when you ran the "vagrant up" command earlier on. In this mode, this vm has openldap and nfs clients already set up and in a working state. This will give you an idea of what to expect when everthing is working.
-2. Vanilla state - In this state, openldap-client01 is just a generic centos7 machine and it's up to you to perform the tasks needed so that it mimicks the End-result state.
+1. End-result state (This is the default state)
+2. Vanilla state
 
-### End-result state
+## End-result state
+This is the default state that is built when you run "vagrant up". In this mode, this vm has openldap and nfs clients already set up, so that you can see what everything looks like when it is working. Heres a few things to check for:
 
-
-### Vanilla state
-
-
-
-E.g. from your macbook/laptop/desktop, open up a bash (or git-bash) terminal, cd into the directory contains the file "Vagrantfile", then run:
+1. Log into the openldap-client01 as the vagrant user:
 
 ```
-ssh tom@192.168.52.101
+$ vagrant ssh openldap-client01
 ```
 
+2. Now view the passwd file:
+
+```
+$ cat /etc/passwd
+```
+Notice that there is no (local) usernames called "tom" or "jerry".
+
+3. Now run:
+
+```
+$ getent passwd
+```
+This time you'll find both users, "tom" and "jerry" are now listed. This indicates that our vm is successfully communicating with openldap_server.
+
+4. Another command that you can run to check that openldap-client01 is successfully communicating with openldap_server is:
+
+```
+$ ldapsearch -x
+```
+
+5. Now confirm that the following directory is empty:
+
+```
+$ cd /home/ldapusers/
+$ ll
+```
+This is where nfs shares will get mounted when you ssh into this machine as an ldap user, i.e. in this case when you ssh into this machine as the user tom or jerry.
+
+6. Now exit out of your vm, and this time try to login in again but this time as the user tom or jerry:
+
+```
+$ ssh tom@192.168.52.101
+```
+Enter the password when prompted.
+
+7. At this point you should have successufully logged in:
+
+```
+$ $ ssh tom@192.168.52.101
+Warning: Permanently added '192.168.52.101' (ECDSA) to the list of known hosts.
+tom@192.168.52.101's password:
+Permission denied, please try again.
+tom@192.168.52.101's password:
+Last failed login: Fri Aug 12 11:12:18 BST 2016 from 192.168.52.1 on ssh:notty
+There was 1 failed login attempt since the last successful login.
+Last login: Fri Aug 12 10:53:51 2016 from 192.168.52.1
+```
+Note, I intentionally entered an invalid password just to make sure password validation. If ldap isn't set up correctly then it is possible to login as an ldap user by entering an incorrect password.
+
+
+8. Now let's check the details of the logged in user, to confirm that we are logged in as tom:
+
+```
+$ id
+uid=4002(tom) gid=4000(ldapusers) groups=4000(ldapusers) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+```
+
+The fact that we have now managed to login using an ldap user means that ldap is working correctly. Now let's check if the nfs side of things are working.
+
+9. Now let's check what is our current home directory, and what it contains:
+
+```
+$ pwd
+/home/ldapusers/tom
+$ ls -la
+total 8
+drwx------. 4 tom  ldapusers 84 Aug 12 09:46 .
+drwxr-xr-x. 3 root root       0 Aug 12 10:53 ..
+-rw-------. 1 tom  ldapusers 68 Aug 12 11:12 .bash_history
+drwxr-xr-x. 3 tom  ldapusers 17 Aug 12 09:45 .cache
+drwxr-xr-x. 3 tom  ldapusers 17 Aug 12 09:45 .config
+-rw-r--r--. 1 tom  ldapusers 10 Aug 12 09:41 how-to-catch-a-mouse.txt
+```
+
+This directory didn't exist earlier, but thanks to autofs, it was automounted when you logged in as the ldap user. This folder is an nfs shared folder, which originates from the nfs_server. The fact that we can view it's content means that openldap-client01 is successfully communicating with the nfs service that's running on the nfs_server. Any files/folders that we edit/add/remove in this directory actually ends up happening on the nfs_server behind the scenes. Also since this directory doesn't actually exists on openldap-client01, it means that only the user "tom" can access this directory and no one else on openldap-client01, not even the root user:
+
+```
+$ vagrant ssh openldap-client01
+Last login: Fri Aug 12 11:29:09 2016 from 10.0.2.2
+[vagrant@openldap-client01 ~]$ sudo -i
+[root@openldap-client01 ~]# cd /home/ldapusers/tom
+-bash: cd: /home/ldapusers/tom: Permission denied
+```
+
+## Vanilla state
+In this state, openldap-client01 is just a generic centos7 machine and it's up to you to perform the tasks needed so that it mimicks the End-result state.
+
+
+To switch to the Vanilla state, we first need to destroy openldap-client01:
+
+```
+$ vagrant destroy openldap-client01
+```
+
+Now in your vagrant project folder, open the following file:
+
+[./scripts/install-openldap_client.sh](https://github.com/Sher-Chowdhury/vagrant-openldap/blob/master/scripts/install-openldap_client.sh)
+
+The second line (# exit 0) is currently commented out, you need to uncomment this line, and save this.
+
+Next run:  
+
+```
+$ vagrant up openldap-client01
+```
+
+Now openldap-client01 is in vanilla mode. It is now up to you to manually perform the tasks to get openldap-client01 communicating with openldap_server
+nfs_server again, like in the End-result state.
+
+Note: to switch back to the End-result state again, just destroy openldap-client01 again, then comment out that line again, and then do a vagrant up again.
 
 
 # Auto snapshots
@@ -203,17 +315,17 @@ On accasions you'll want to reset your vagrant boxes. This is usually done by do
 For each vm, a virtualbox is taken towards the end of your "vagrant up". This snapshot is called "baseline". If you want to roll back to this snapshot, then you do:
 
 ```
-vagrant snapshot go openldap-client01 baseline
+$ vagrant snapshot go openldap-client01 baseline
 ```
 
+However it might be best to just destroy this vm and do vagrant up again.
 
 # Start all over again
 If you want to start from the beginning again, then do:
 
 ```
-vagrant destroy
-vagrant box list
-vagrant box remove {box name}
+$ vagrant destroy
+$ vagrant box remove --all
 ```
 
 Then delete any .box files, or in fact delete the entire vagrant project then do a git clone again.  
