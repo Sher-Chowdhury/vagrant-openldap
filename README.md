@@ -1,4 +1,4 @@
-### Overview
+# Overview
 
 This is a vagrant project that builds a 3 Centos7 VMs running on Virtualbox:  
 
@@ -27,7 +27,7 @@ openldap-client01         192.168.52.101
 
 Note, you only need to ssh into the openldap-client01 in order to practice for the RHCSA exam. To pracice for the RHCSA exam, you need to ssh into openldap-client01 and then install & configure the openldap client. Once that's done, you should then test if your openldap client is working as expected. We'll explain how to perform these tests later.  
 
-### Pre-reqs
+# Pre-reqs
 
 you need to have the following installed on your host machine:
 
@@ -60,7 +60,7 @@ This will allow you to scroll up further and do copy-pasting in/out of the git-b
 
 
 
-### Set up
+# Set up
 
 From your macbook/laptop/desktop, open up a bash (or git-bash) terminal, cd into the directory that contains the file "Vagrantfile", then run:
 
@@ -86,7 +86,7 @@ VM, run `vagrant status NAME`.
 
 ```
 
-### Local Account Login credentials
+## Local Account Login credentials
 You can ssh into all your VMs using:
 
 ```
@@ -118,7 +118,7 @@ Once your logged in as the vagrant user, you can then sudo into root by running 
 
 
 
-#### openldap_server
+# openldap_server
 The openldap_server has the openldap server package installed and running. We have created 2 ldap based user accounts on the openldap_server, they are:
 
 ```
@@ -135,7 +135,7 @@ password: testjerry
 
 For the RHCSA and RHCE exams you don't need to know how to set up an openldap_server like this. However it's worth exploring this VM for your own understanding.
 
-#### nfs_server
+# nfs_server
 This nfs server has made two folders available to be accessible remotely.
 
 ```
@@ -171,7 +171,7 @@ The key benefit of having centralised home directories is that which server the 
 For the RHCSA exam, you don't need to know how to setup + configure an nfs server like this. But you do for the RHCE exam.
 
 
-#### openldap-client01 server
+## openldap-client01
 
 This vm is where you do all of your practicing for the RHCSA exam.
 
@@ -180,8 +180,10 @@ There are 2 ways to build this VM.
 1. End-result state - This is the default state that is built when you ran the "vagrant up" command earlier on. In this mode, this vm has openldap and nfs clients already set up and in a working state. This will give you an idea of what to expect when everthing is working.
 2. Vanilla state - In this state, openldap-client01 is just a generic centos7 machine and it's up to you to perform the tasks needed so that it mimicks the End-result state.
 
+### End-result state
 
 
+### Vanilla state
 
 
 
@@ -193,7 +195,7 @@ ssh tom@192.168.52.101
 
 
 
-### Auto snapshots
+# Auto snapshots
 
 On accasions you'll want to reset your vagrant boxes. This is usually done by doing "vagrant destroy" followed by "vagrant up". This can be timeconsuming. A much faster approach is to use virtualbox snapshots instead.
 
@@ -205,8 +207,8 @@ vagrant snapshot go openldap-client01 baseline
 ```
 
 
-### Start all over again
-If you want to start from the begining again, then do:
+# Start all over again
+If you want to start from the beginning again, then do:
 
 ```
 vagrant destroy
