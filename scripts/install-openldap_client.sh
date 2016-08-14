@@ -20,7 +20,7 @@ yum install -y openldap-clients nss-pam-ldapd nss_ldap
 
 # We are going to do it using the authconfig cli command
 
-authconfig --enableldap --enableldapauth --ldapserver=openldapmaster.openldap-server.local --ldapbasedn="dc=openldap-server,dc=local" --ldaploadcacert="http://openldapmaster.openldap-server.local/ldap.pem" --update
+authconfig --enableldap --enableldapauth --ldapserver=openldapmaster.openldap-server.local --ldapbasedn="dc=openldap-server,dc=local" --enableldaptls --ldaploadcacert="http://openldapmaster.openldap-server.local/ldap.pem" --update
 
 
 
