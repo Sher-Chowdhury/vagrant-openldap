@@ -175,12 +175,19 @@ mkdir /etc/openldap-ssl-certs
 
 openssl req -new -x509 -nodes -out /etc/openldap-ssl-certs/ldap.pem -keyout /etc/openldap-ssl-certs/ldapkey.pem -days 3650 -subj "/C=UK/ST=Hampshire/L=Southampton/O=CodingBee Ltd/OU=IT/CN=openldapmaster.openldap-server.local/emailAddress=webmaster@codingbee.net"
 
-cd /etc/openldap/slapd.d/cn\=config
+cd /tmp/openldap
+ldapmodify -Y EXTERNAL -H ldapi:/// -f cert.ldif
 
 
 
+sed -i -e 's|SLAPD_URLS="ldapi:/// ldap:///"|SLAPD_URLS="ldapi:/// ldap:/// ldaps:///"|g' /etc/sysconfig/slapd
+systemctl restart slapd
 
+ss -atn # should now be listening on port 636 (ldaps secure)
 
 yum install -y httpd
+
+cp /etc/openldap-ssl-certs/ldap.pem /var/www/html/ldap.pem
+
 systemctl enable httpd
 systemctl start httpd
