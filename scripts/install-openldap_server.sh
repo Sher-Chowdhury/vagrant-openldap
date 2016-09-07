@@ -169,6 +169,25 @@ ldappasswd -s testtom -w password123 -D "cn=Manager,dc=openldap-server,dc=local"
 ldapadd -x -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -f user-jerry.ldif
 ldappasswd -s testjerry -w password123 -D "cn=Manager,dc=openldap-server,dc=local" -x "uid=jerry,ou=people,dc=openldap-server,dc=local"
 
-## This outputs:
 
-# adding new entry "uid=jerry,ou=People,dc=openldap-server,dc=local"
+
+mkdir /etc/openldap-ssl-certs
+
+openssl req -new -x509 -nodes -out /etc/openldap-ssl-certs/ldap.pem -keyout /etc/openldap-ssl-certs/ldapkey.pem -days 3650 -subj "/C=UK/ST=Hampshire/L=Southampton/O=CodingBee Ltd/OU=IT/CN=openldapmaster.openldap-server.local/emailAddress=webmaster@codingbee.net"
+
+cd /tmp/openldap
+ldapmodify -Y EXTERNAL -H ldapi:/// -f cert.ldif
+
+
+
+sed -i -e 's|SLAPD_URLS="ldapi:/// ldap:///"|SLAPD_URLS="ldapi:/// ldap:/// ldaps:///"|g' /etc/sysconfig/slapd
+systemctl restart slapd
+
+ss -atn # should now be listening on port 636 (ldaps secure)
+
+yum install -y httpd
+
+cp /etc/openldap-ssl-certs/ldap.pem /var/www/html/ldap.pem
+
+systemctl enable httpd
+systemctl start httpd

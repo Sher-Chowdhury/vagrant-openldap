@@ -291,9 +291,12 @@ $ vagrant destroy openldap-client01
 
 Now in your vagrant project folder, open the following file:
 
+[Vagrantfile](https://github.com/Sher-Chowdhury/vagrant-openldap/blob/master/scripts/install-openldap_client.sh)
+
+now in this file, search for the word 'vanilla', and then follow the instructions which indicates to comment out a couple of lines.
+
 [./scripts/install-openldap_client.sh](https://github.com/Sher-Chowdhury/vagrant-openldap/blob/master/scripts/install-openldap_client.sh)
 
-The second line (# exit 0) is currently commented out, you need to uncomment this line, and save this.
 
 Next run:  
 

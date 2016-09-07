@@ -151,9 +151,10 @@ Vagrant.configure(2) do |config|
         vb.name = "openldap-client0#{i}"
       end
 
+      #### Comment out the following 2 lines to enable vanilla mode.
       openldap_client.vm.provision "shell", path: "scripts/install-openldap_client.sh"
-
       openldap_client.vm.provision "shell", path: "scripts/setup-automounting-of-home-directories.sh"
+
 
       # this takes a vm snapshot (which we have called "basline") as the last step of "vagrant up".
       openldap_client.vm.provision :host_shell do |host_shell|
